@@ -25,8 +25,8 @@
 ### 3.1. Prerequisites
 
 - Node.js (ver ≥ 18) includes npm
-- PostgreSQL 14
-- Redis 7
+- PostgreSQL
+- Redis
 
 ### 3.2. Clone & install
 
@@ -85,6 +85,8 @@ npm run test	#Jest unit tests
 <table>
 <tr>
 <td> Method </td> <td>	Endpoint </td>	<td> Purpose </td> <td> Payload </td>
+</tr>
+<td> POST </td>
 <td>/api/users</td>
 <td>Create user</td>
 <td>
