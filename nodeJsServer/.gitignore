@@ -1,0 +1,9 @@
+.env
+/node_modules
+/dist
+/prisma/migrations
+/.idea
+/.vscode
+npm-debug.log*
+/DS_Store
+.DS_Store

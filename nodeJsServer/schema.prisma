@@ -1,0 +1,58 @@
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_HOST")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  createdAt DateTime  @default(now()) @map("created_at")
+  bookings  Booking[]
+
+  @@map("users")
+}
+
+model Event {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(255)
+  description  String?
+  dateTime     DateTime  @map("date_time")
+  totalTickets Int       @map("total_tickets")
+  ticketPrice  Decimal   @map("ticket_price") @db.Decimal(10, 2)
+  ticketsSold  Int       @default(0) @map("tickets_sold")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+  bookings     Booking[]
+
+  @@map("events")
+}
+
+model Booking {
+  id              Int       @id @default(autoincrement())
+  userId          Int       @map("user_id")
+  eventId         Int       @map("event_id")
+  ticketQuantity  Int       @map("ticket_quantity")
+  totalAmount     Decimal   @map("total_amount") @db.Decimal(10, 2)
+  status          BookingStatus
+  bookingTime     DateTime  @default(now()) @map("booking_time")
+  paymentDeadline DateTime  @map("payment_deadline")
+  confirmedAt     DateTime? @map("confirmed_at")
+  cancelledAt     DateTime? @map("cancelled_at")
+
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
